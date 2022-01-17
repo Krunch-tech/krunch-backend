@@ -1,0 +1,31 @@
+{
+  "name": "krunch-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "dotenv": "^14.1.0",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13"
+  },
+  "scripts": {
+    "dev": "nodemon src/app.ts",
+    "start": "node dist/app.js",
+    "build": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Krunch-tech/krunch-backend.git"
+  },
+  "author": "Shivansh Sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Krunch-tech/krunch-backend/issues"
+  },
+  "homepage": "https://github.com/Krunch-tech/krunch-backend#readme"
+}
