@@ -14,7 +14,7 @@ router.post('/', async (req: Request, res: Response) => {
         return;
     }
 
-    if (req.body.email.length > 150 || req.body.password.length > 150 || req.body.username.length > 150) {
+    if (req.body.email.length > 150 || req.body.password.length > 150 || req.body.name.length > 150) {
         res.status(400);
         res.json({success: false, error: 'Spam detected'});
         return;
@@ -45,7 +45,7 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     const secret: string = process.env.JWT_SECRET!;
-    const token = jwt.sign({email: newUser.email}, secret)
+    const token = jwt.sign({email: newUser.email}, secret, {expiresIn: process.env.JWT_EXPIRY});
 
     res.status(200);
     res.json({success: true, error: null, token: token});
