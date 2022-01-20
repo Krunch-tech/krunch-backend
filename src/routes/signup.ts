@@ -1,6 +1,8 @@
 import express from 'express'
 import { Request, Response} from 'express';
 import users from '../models/user';
+import hashPassword from '../tools/hash';
+import jwt from 'jsonwebtoken'
 
 export const router = express.Router();
 
@@ -23,6 +25,29 @@ router.post('/', async (req: Request, res: Response) => {
     if(user){
         res.status(200);
         res.json({success: false, error: 'Email already exists'});
+        return;
     }
-    
-})
+
+    let newUser =new users ({
+        email: req.body.email,
+        password: await hashPassword(req.body.password),
+        name: req.body.name,
+        authType: 'custom'
+    });
+
+    try {
+        newUser = await newUser.save();
+    } catch (e) {
+        console.error(`Error occurred: ${e}`);
+        res.status(500)
+        res.json({success: false, error: 'Unable to save.'});
+        return;
+    }
+
+    const secret: string = process.env.JWT_SECRET!;
+    const token = jwt.sign({email: newUser.email}, secret)
+
+    res.status(200);
+    res.json({success: true, error: null, token: token});
+    return;
+});
