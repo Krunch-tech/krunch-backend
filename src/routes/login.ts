@@ -35,4 +35,7 @@ router.post('/', async (req: Request, res: Response) => {
         res.json({success: true, error: null, token: token});
         return;
     }
+
+    res.status(200);
+    res.json({success: false, error: 'Invalid login credentials'});
 });
