@@ -3,11 +3,15 @@ require('./models/dbinit')
 import { Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import express from 'express'
+import singupRouter from './routes/signup';
+
+
 const app = express();
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/signup', singupRouter);
 app.get('/', async (req: Request, res: Response)=> {
     res.send("testing")
 })

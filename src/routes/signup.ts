@@ -4,7 +4,7 @@ import users from '../models/user';
 import hashPassword from '../tools/hash';
 import jwt from 'jsonwebtoken'
 
-export const router = express.Router();
+const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
 
@@ -51,3 +51,5 @@ router.post('/', async (req: Request, res: Response) => {
     res.json({success: true, error: null, token: token});
     return;
 });
+
+export default router;
