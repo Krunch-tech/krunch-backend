@@ -48,7 +48,7 @@ router.post('/', async (req: Request, res: Response) => {
     const token = jwt.sign({email: newUser.email}, secret, {expiresIn: process.env.JWT_EXPIRY});
 
     res.status(200);
-    res.json({success: true, error: null, token: token});
+    res.json({success: true, error: null, token: token, authType: 'custom'});
     return;
 });
 
