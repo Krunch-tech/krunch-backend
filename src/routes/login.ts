@@ -39,3 +39,5 @@ router.post('/', async (req: Request, res: Response) => {
     res.status(200);
     res.json({success: false, error: 'Invalid login credentials'});
 });
+
+export default router;

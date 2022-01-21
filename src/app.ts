@@ -4,6 +4,8 @@ import { Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import express from 'express'
 import singupRouter from './routes/signup';
+import authorize from './middlewares/auth';
+import loginRouter from './routes/login';
 
 
 const app = express();
@@ -12,7 +14,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/signup', singupRouter);
-app.get('/', async (req: Request, res: Response)=> {
+app.use('/login', loginRouter);
+app.get('/', authorize, async (req: Request, res: Response)=> {
     res.send("testing")
 })
 
