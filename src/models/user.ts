@@ -9,7 +9,6 @@ const users = mongoose.model('users', new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
         trim: true
     },
     verified: {
@@ -24,6 +23,10 @@ const users = mongoose.model('users', new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        trim: true,
+    },
+    picture: {
+        type: String,
         trim: true,
     }
 }));
