@@ -8,6 +8,7 @@ import authorize from './middlewares/auth';
 import loginRouter from './routes/login';
 import productRouter from './routes/storeItem';
 import getItemByCategory from './routes/getItemsByCategory';
+import likedItemsRouter from './routes/getLikedItems';
 
 
 const app = express();
@@ -19,6 +20,7 @@ app.use('/signup', singupRouter);
 app.use('/login', loginRouter);
 app.use('/storeProduct', authorize, productRouter);
 app.use('/getItem/category', authorize, getItemByCategory);
+app.use('/getItems/liked', authorize, likedItemsRouter);
 app.get('/', authorize, async (req: Request, res: Response)=> {
     res.send("testing")
 })
