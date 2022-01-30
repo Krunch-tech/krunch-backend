@@ -23,6 +23,7 @@ const products = mongoose.model('products', new mongoose.Schema({
     },
     price: {
         type: String,
+        default: "0.0",
         trim: true,
     },
     data: {
@@ -37,7 +38,7 @@ const products = mongoose.model('products', new mongoose.Schema({
         type: Array,
     },
     location: {
-        type: Location,
+        type: Object,
     },
     like: {
         type: Boolean,
