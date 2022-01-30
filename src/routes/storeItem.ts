@@ -13,7 +13,7 @@ router.post('/', async (req: Request, res: Response) => {
         time = time.toString();
         const ip = req.ip;
         const location = lookup(ip);
-        const p = await products.find({ $and: [{ email: req.body.userInfo.email }, { name: name }] });
+        const p = await products.findOne({ $and: [{ email: req.body.userInfo.email }, { name: name }] });
         
         if (p) {
             res.status(200).json({success: false, error: 'Item with name already exists.'});
