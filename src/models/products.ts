@@ -47,6 +47,9 @@ const products = mongoose.model('products', new mongoose.Schema({
     category: {
         type: String,
         trim: true,
+    },
+    code: {
+        type: Number,
     }
 }));
 
