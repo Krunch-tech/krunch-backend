@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Request, Response } from 'express'
 import { Next } from '../Types/type'
-import fetch from 'node-fetch';
+import axios from 'axios';
 import users from '../models/user';
 
 const authorize = async (req: Request, res: Response, next: Next) => {
@@ -34,8 +34,9 @@ const authorize = async (req: Request, res: Response, next: Next) => {
 
     if (type==='facebook') {
 
-        const { userId, accessToken } = req.headers;
-        if(!userId || !accessToken) {
+        const { userid, accesstoken } = req.headers;
+        console.log(req.headers);
+        if(!userid || !accesstoken) {
             res.status(400).json({
                 success: 'false',
                 error: 'Bad Request',
@@ -43,11 +44,19 @@ const authorize = async (req: Request, res: Response, next: Next) => {
             return;
         }
 
-        let urlGraphFacebook = `https://graph.facebook.com/${userId}?fields=name,email,picture&access_token=${accessToken}`;
-        let resp: any = await fetch(urlGraphFacebook, {
-            method: 'GET'
-        });
+        let urlGraphFacebook = `https://graph.facebook.com/${userid}?fields=name,email,picture&access_token=${accesstoken}`;
+        let resp: any = await axios.get(urlGraphFacebook);
+        
+        if (resp["error"]) {
 
+            res.status(401).json({
+                success: false,
+                error: resp.error.message
+            });
+            return;
+    
+        }
+        resp = await resp.data;
         const user = await users.findOne({email: resp.email});
         if(!user){
             res.status(401).json({

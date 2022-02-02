@@ -1,18 +1,14 @@
 import express from 'express';
 import { Request, Response, Router } from 'express';
-import fetch from 'node-fetch';
+import axios from 'axios';
 import users from '../models/user'
 const router: Router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-    const { userId, accessToken } = req.body;
+    const { userid, accesstoken } = req.body;
 
-    let urlGraphFacebook = `https://graph.facebook.com/${userId}?fields=name,email,picture&access_token=${accessToken}`;
-    let resp: any = await fetch(urlGraphFacebook, {
-        method: 'GET'
-    });
-
-    resp = await resp.json();
+    let urlGraphFacebook = `https://graph.facebook.com/${userid}?fields=name,email,picture&access_token=${accesstoken}`;
+    let resp: any = await axios.get(urlGraphFacebook);
     if (resp["error"]) {
 
         res.status(401).json({
@@ -22,7 +18,7 @@ router.post('/', async (req: Request, res: Response) => {
         return;
 
     }
-
+    resp = await resp.data;
     const email: string = resp.email!;
     const checkUser = await users.findOne({email: email});
     if (checkUser){
@@ -55,9 +51,10 @@ router.post('/', async (req: Request, res: Response) => {
     res.status(200).json({
         success: true,
         error: null,
-        token: accessToken,
+        token: accesstoken,
         authType: 'facebook'
     });
     return;
 
-})
+});
+export default router;
