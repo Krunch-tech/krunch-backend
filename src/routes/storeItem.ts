@@ -8,20 +8,23 @@ import axios from "axios";
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-    
+
+
     //custom product type
     if(req.body.productType==='custom') {
         const { name, picture, price, data, tags, like, category } = req.body;
-        let time: any = new Date();
-        time = time.toString();
-        const ip = req.ip;
-        const location = lookup(ip);
+        
         const p = await products.findOne({ $and: [{ email: req.body.userInfo.email }, { name: name }] });
         
         if (p) {
             res.status(200).json({success: false, error: 'Item with name already exists.'});
             return;
         }
+
+        let time: any = new Date();
+        time = time.toString();
+        const ip = req.ip;
+        const location = lookup(ip);
 
         let product = new products({
             userEmail: req.body.userInfo.email,
@@ -61,13 +64,17 @@ router.post('/', async (req: Request, res: Response) => {
         
         //Item present in our DB
         if(item) {
-            let time: any = new Date();
-            time = time.toString();
+
             let img: String = "";
             if(item.images.length > 0) {
                 img = item.images[0];
             }
             
+            let time: any = new Date();
+            time = time.toString();
+            const ip = req.ip;
+            const location = lookup(ip);
+
             let prod = new products({
                 userEmail: req.body.userInfo.email,
                 productType: 'barcode',
@@ -105,10 +112,37 @@ router.post('/', async (req: Request, res: Response) => {
         }
         resp = resp.data;
         let barProducts = new barcodes(resp.products[0]);
+        let img: string = '';
+
+        if(item.images.length > 0) {
+            img = item.images[0]!;
+        }
+
+        let time: any = new Date();
+        time = time.toString();
+        const ip = req.ip;
+        const location = lookup(ip);
+
         try {
             barProducts = await barProducts.save();
-            res.status(200).json({success: true});
+            let prod = new products({
+                userEmail: req.body.userInfo.email,
+                productType: 'barcode',
+                name: barProducts.title,
+                picture: img,
+                data: barProducts.description,
+                time: time,
+                location: location,
+                like: req.body.like,
+                category: barProducts.category,
+                tags: barProducts.features
+            });
+
+            prod = await prod.save();
+            const id = prod._id;
+            res.status(200).json({success: true, id: id});
             return;
+            
         } catch(e) {
             console.log(`Unable to save barcode.\n${e}`);
             res.status(200).json({success: false, error: "Database error"});
