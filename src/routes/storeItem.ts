@@ -3,11 +3,12 @@ import { Request, Response } from "express";
 import products from "../models/products";
 import { lookup } from 'geoip-lite';
 import barcodes from "../models/barcodes";
+import axios from "axios";
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-
+    
     //custom product type
     if(req.body.productType==='custom') {
         const { name, picture, price, data, tags, like, category } = req.body;
@@ -93,6 +94,27 @@ router.post('/', async (req: Request, res: Response) => {
         }
 
         //Item not present in our DB
+        const url = `https://api.barcodelookup.com/v3/products?barcode=${code}&formatted=y&key=${process.env.BARCODE_API_KEY}`;
+        let resp: any = await axios.get(url);
+        if(resp.status!=200) {
+            res.status(400).json({
+                success: false,
+                error: `Barcode invalid`
+            });
+            return;
+        }
+        resp = resp.data;
+        let barProducts = new barcodes(resp.products[0]);
+        try {
+            barProducts = await barProducts.save();
+            res.status(200).json({success: true});
+            return;
+        } catch(e) {
+            console.log(`Unable to save barcode.\n${e}`);
+            res.status(200).json({success: false, error: "Database error"});
+            return;
+        }
+        
     }
 });
 

@@ -6,7 +6,6 @@ import users from '../models/user';
 
 const authorize = async (req: Request, res: Response, next: Next) => {
     const type = req.headers.authtype;
-    console.log(type);
     if (type==='custom'){
 
         const token: any = req.headers['x-access-token'] || req.headers.authorization;
@@ -35,7 +34,7 @@ const authorize = async (req: Request, res: Response, next: Next) => {
     if (type==='facebook') {
 
         const { userid, accesstoken } = req.headers;
-        console.log(req.headers);
+        
         if(!userid || !accesstoken) {
             res.status(400).json({
                 success: 'false',
@@ -43,15 +42,14 @@ const authorize = async (req: Request, res: Response, next: Next) => {
             });
             return;
         }
-
         let urlGraphFacebook = `https://graph.facebook.com/${userid}?fields=name,email,picture&access_token=${accesstoken}`;
         let resp: any = await axios.get(urlGraphFacebook);
-        
-        if (resp["error"]) {
+
+        if (resp["error"] || resp.status == 200) {
 
             res.status(401).json({
                 success: false,
-                error: resp.error.message
+                error: resp.error.message || 'Unauthorized'
             });
             return;
     
