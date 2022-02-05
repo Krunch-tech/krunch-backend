@@ -37,7 +37,8 @@ router.post('/', async (req: Request, res: Response) => {
             location: location,
             like: like,
             category: category,
-            tags: tags
+            tags: tags,
+            price: price
         });
 
         try {
