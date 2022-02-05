@@ -4,6 +4,7 @@ import products from "../models/products";
 import { lookup } from 'geoip-lite';
 import barcodes from "../models/barcodes";
 import axios from "axios";
+import downloadImage from "../tools/downloadImage";
 
 const router = express.Router();
 
@@ -112,6 +113,7 @@ router.post('/', async (req: Request, res: Response) => {
         }
         resp = resp.data;
         let barProducts = new barcodes(resp.products[0]);
+        let barcode_number: any = resp[0].products[0].barcode_number;
         let img: string = '';
 
         if(item.images.length > 0) {
@@ -141,6 +143,7 @@ router.post('/', async (req: Request, res: Response) => {
             prod = await prod.save();
             const id = prod._id;
             res.status(200).json({success: true, id: id});
+            await downloadImage(img, barcode_number.toString())
             return;
             
         } catch(e) {
