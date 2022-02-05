@@ -12,6 +12,7 @@
     "geoip-lite": "^1.4.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.7",
+    "node-image-downloader": "^1.0.7",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
