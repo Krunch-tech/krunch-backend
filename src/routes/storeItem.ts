@@ -87,7 +87,8 @@ router.post('/', async (req: Request, res: Response) => {
                 location: location,
                 like: req.body.like,
                 category: item.category,
-                tags: item.features
+                tags: item.features,
+                code: item.barcode_number
             });
 
             try {
