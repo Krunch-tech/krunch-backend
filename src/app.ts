@@ -12,6 +12,8 @@ import getItemByCategory from './routes/getItemsByCategory';
 import likedItemsRouter from './routes/getLikedItems';
 import dislikedItemsRouter from './routes/getDislikedItems';
 import updateNameRouter from './routes/updateName';
+import updatePictureRouter from './routes/updatePicture';
+
 
 const app = express();
 
@@ -24,6 +26,7 @@ app.use('/storeProduct', authorize, productRouter);
 app.use('/getItem/category', authorize, getItemByCategory);
 app.use('/getItems/liked', authorize, likedItemsRouter);
 app.use('/updateName', authorize, updateNameRouter);
+app.use('/updatePicture', authorize, updatePictureRouter);
 app.use('/getItems/disliked', authorize, dislikedItemsRouter);
 app.use('/facebookLogin', facebookLogin);
 app.get('/', authorize, async (req: Request, res: Response)=> {
