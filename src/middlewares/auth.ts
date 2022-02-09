@@ -43,9 +43,20 @@ const authorize = async (req: Request, res: Response, next: Next) => {
             return;
         }
         let urlGraphFacebook = `https://graph.facebook.com/${userid}?fields=name,email,picture&access_token=${accesstoken}`;
-        let resp: any = await axios.get(urlGraphFacebook);
 
-        if (resp["error"] || resp.status == 200) {
+        let resp: any;
+
+        try {
+            resp = await axios.get(urlGraphFacebook);
+        } catch (e) {
+            res.status(400).json({
+                success: false,
+                error:'Bad request'
+            });
+            return;
+        }
+
+        if (resp["error"] || resp.status !== 200) {
 
             res.status(401).json({
                 success: false,

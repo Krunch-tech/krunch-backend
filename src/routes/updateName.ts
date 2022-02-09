@@ -5,7 +5,7 @@ import users from "../models/user";
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-    console.log("test");
+
     let user = await users.findOne({ email: req.body.userInfo.email });
     if(!user) {
         res.status(200).json({success: false, error: "User not found"});
