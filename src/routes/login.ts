@@ -3,10 +3,25 @@ import { Request, Response } from "express";
 import users from "../models/user";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import * as Joi from 'joi';
+import {
+    ContainerTypes,
+    ValidatedRequest,
+    ValidatedRequestSchema,
+    createValidator
+  } from 'express-joi-validation'
+import { valid } from 'joi';
 
 const router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+const validator = createValidator()
+
+const querySchema = Joi.object({
+  email: Joi.string().required(),
+  password: Joi.string().required(),
+});
+
+router.post('/',validator.body(querySchema), async (req: Request, res: Response) => {
 
     if (!(typeof req.body.email === 'string' && typeof req.body.password === 'string')) {
         res.status(400);
