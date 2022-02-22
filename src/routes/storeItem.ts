@@ -5,10 +5,29 @@ import { lookup } from 'geoip-lite';
 import barcodes from "../models/barcodes";
 import axios from "axios";
 import downloadImage from "../tools/downloadImage";
+import * as Joi from 'joi';
+import {
+    createValidator
+} from 'express-joi-validation'
+import { valid } from 'joi';
 
 const router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+const validator = createValidator();
+
+const querySchema = Joi.object({
+    name: Joi.string().required(),
+    picture: Joi.string(),
+    price: Joi.string(),
+    data: Joi.date(),
+    tags: Joi.array(),
+    like: Joi.boolean(),
+    category: Joi.string(),
+    userInfo: Joi.object(),
+    bar: Joi.string()
+});
+
+router.post('/',validator.body(querySchema), async (req: Request, res: Response) => {
 
 
     //custom product type

@@ -5,9 +5,6 @@ import hashPassword from '../tools/hash';
 import jwt from 'jsonwebtoken'
 import * as Joi from 'joi';
 import {
-    ContainerTypes,
-    ValidatedRequest,
-    ValidatedRequestSchema,
     createValidator
   } from 'express-joi-validation'
 import { valid } from 'joi';
