@@ -22,13 +22,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/signup', singupRouter);
 app.use('/login', loginRouter);
+app.use('/facebookLogin', facebookLogin);
 app.use('/storeProduct', authorize, productRouter);
 app.use('/getItem/category', authorize, getItemByCategory);
 app.use('/getItems/liked', authorize, likedItemsRouter);
+app.use('/getItems/disliked', authorize, dislikedItemsRouter);
 app.use('/updateName', authorize, updateNameRouter);
 app.use('/updatePicture', authorize, updatePictureRouter);
-app.use('/getItems/disliked', authorize, dislikedItemsRouter);
-app.use('/facebookLogin', facebookLogin);
 app.get('/', authorize, async (req: Request, res: Response)=> {
     res.send("testing")
 })

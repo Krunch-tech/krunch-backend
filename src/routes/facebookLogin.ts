@@ -2,18 +2,31 @@ import express from 'express';
 import { Request, Response, Router } from 'express';
 import axios from 'axios';
 import users from '../models/user'
+import * as Joi from 'joi';
+import {
+    createValidator
+} from 'express-joi-validation'
+import { valid } from 'joi';
+
 const router: Router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+const validator = createValidator();
+
+const querySchema = Joi.object({    
+    userid: Joi.string().required(),
+    accesstoken: Joi.string().required(),
+});
+
+router.post('/',validator.body(querySchema), async (req: Request, res: Response) => {
     const { userid, accesstoken } = req.body;
 
     let urlGraphFacebook = `https://graph.facebook.com/${userid}?fields=name,email,picture&access_token=${accesstoken}`;
     let resp: any = await axios.get(urlGraphFacebook);
-    if (resp["error"]) {
+    if (resp["error"] || resp.status !== 200) {
 
         res.status(401).json({
             success: false,
-            error: resp.error.message
+            error: resp.error.message || 'Unauthorized'
         });
         return;
 

@@ -1,10 +1,21 @@
 import express from "express";
 import { Request, Response } from "express";
 import users from "../models/user";
+import * as Joi from 'joi';
+import {
+    createValidator
+} from 'express-joi-validation'
+import { valid } from 'joi';
 
 const router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+const validator = createValidator();
+
+const querySchema = Joi.object({    
+    name: Joi.string().required(),
+});
+
+router.post('/', validator.body(querySchema), async (req: Request, res: Response) => {
 
     let user = await users.findOne({ email: req.body.userInfo.email });
     if(!user) {

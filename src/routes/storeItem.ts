@@ -16,7 +16,7 @@ const router = express.Router();
 const validator = createValidator();
 
 const querySchema = Joi.object({
-    name: Joi.string().required(),
+    name: Joi.string(),
     picture: Joi.string(),
     price: Joi.string(),
     data: Joi.date(),
