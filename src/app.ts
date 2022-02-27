@@ -13,11 +13,12 @@ import likedItemsRouter from './routes/getLikedItems';
 import dislikedItemsRouter from './routes/getDislikedItems';
 import updateNameRouter from './routes/updateName';
 import updatePictureRouter from './routes/updatePicture';
+import cors from 'cors';
 
 
 const app = express();
 
-
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/signup', singupRouter);
