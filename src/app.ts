@@ -29,7 +29,7 @@ app.use('/getItems/liked', authorize, likedItemsRouter);
 app.use('/getItems/disliked', authorize, dislikedItemsRouter);
 app.use('/updateName', authorize, updateNameRouter);
 app.use('/updatePicture', authorize, updatePictureRouter);
-app.get('/', authorize, async (req: Request, res: Response)=> {
+app.get('/', async (req: Request, res: Response)=> {
     res.send("testing")
 })
 
