@@ -13,6 +13,7 @@ import likedItemsRouter from './routes/getLikedItems';
 import dislikedItemsRouter from './routes/getDislikedItems';
 import updateNameRouter from './routes/updateName';
 import updatePictureRouter from './routes/updatePicture';
+import checkUser from './routes/checkUser';
 import cors from 'cors';
 
 
@@ -30,6 +31,7 @@ app.use('/getItems/liked', authorize, likedItemsRouter);
 app.use('/getItems/disliked', authorize, dislikedItemsRouter);
 app.use('/updateName', authorize, updateNameRouter);
 app.use('/updatePicture', authorize, updatePictureRouter);
+app.use('/checkUser', checkUser);
 app.get('/', async (req: Request, res: Response)=> {
     res.send("testing")
 })
