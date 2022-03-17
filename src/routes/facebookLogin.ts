@@ -34,6 +34,7 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
     resp = await resp.data;
     const email: string = resp.email!;
     const checkUser = await users.findOne({email: email});
+    
     if (checkUser){
         res.status(401).json({
             success: false,
