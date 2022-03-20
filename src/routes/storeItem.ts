@@ -33,6 +33,11 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
     //custom product type
     if(req.body.productType==='custom') {
         const { name, picture, price, data, tags, like, category } = req.body;
+
+        let location;
+        const ip = req.ip;
+
+
         
         const p = await products.findOne({ $and: [{ email: req.body.userInfo.email }, { name: name }] });
         
@@ -40,11 +45,16 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
             res.status(200).json({success: false, error: 'Item with name already exists.'});
             return;
         }
+        
+        if (req.body.location) {
+            location = req.body.location;
+        } else {
+            location = await lookup(ip);
+        }
 
         let time: any = new Date();
         time = time.toString();
-        const ip = req.ip;
-        const location = lookup(ip);
+        
 
         let product = new products({
             userEmail: req.body.userInfo.email,
