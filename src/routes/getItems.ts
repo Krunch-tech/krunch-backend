@@ -4,7 +4,7 @@ import products from "../models/products";
 
 const router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
 
     try {
         const product = await products.find({email: req.body.userInfo.email});
