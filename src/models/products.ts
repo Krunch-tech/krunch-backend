@@ -26,8 +26,8 @@ const products = mongoose.model('products', new mongoose.Schema({
         default: "0.0",
         trim: true,
     },
-    data: {
-        type: Date,
+    date: {
+        type: String,
         required: true,
     },
     time: {
@@ -38,7 +38,7 @@ const products = mongoose.model('products', new mongoose.Schema({
         type: Array,
     },
     location: {
-        type: Object,
+        type: Array,
     },
     like: {
         type: Boolean,

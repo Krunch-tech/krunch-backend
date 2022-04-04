@@ -32,7 +32,7 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
 
     //custom product type
     if(req.body.productType==='custom') {
-        const { name, picture, price, data, tags, like, category } = req.body;
+        const { name, picture, date, tags, like } = req.body;
 
         let location;
         const ip = req.ip;
@@ -49,7 +49,7 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
         if (req.body.location) {
             location = req.body.location;
         } else {
-            location = await lookup(ip);
+            location = [];
         }
 
         let time: any = new Date();
@@ -61,13 +61,11 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
             productType: 'custom',
             name: name,
             picture: picture,
-            data: data,
+            date: date,
             time: time,
             location: location,
             like: like,
-            category: category,
             tags: tags,
-            price: price
         });
 
         try {
@@ -104,7 +102,12 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
             let time: any = new Date();
             time = time.toString();
             const ip = req.ip;
-            const location = lookup(ip);
+            let location;
+            if (req.body.location) {
+                location = req.body.location;
+            } else {
+                location = [];
+            }
 
             let prod = new products({
                 userEmail: req.body.userInfo.email,
@@ -154,7 +157,12 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
         let time: any = new Date();
         time = time.toString();
         const ip = req.ip;
-        const location = lookup(ip);
+        let location;
+        if (req.body.location) {
+            location = req.body.location;
+        } else {
+            location = [];
+        }
 
         try {
             barProducts = await barProducts.save();
