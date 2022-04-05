@@ -17,12 +17,13 @@ const validator = createValidator();
 
 const querySchema = Joi.object({
     name: Joi.string(),
+    prodcutType: Joi.string(),
     picture: Joi.string(),
     price: Joi.string(),
-    data: Joi.date(),
+    date: Joi.string(),
     tags: Joi.array(),
     like: Joi.boolean(),
-    category: Joi.string(),
+    location: Joi.array(),
     userInfo: Joi.object(),
     bar: Joi.string()
 });
@@ -32,13 +33,11 @@ router.post('/',validator.body(querySchema), async (req: Request, res: Response)
 
     //custom product type
     if(req.body.productType==='custom') {
+
         const { name, picture, date, tags, like } = req.body;
 
         let location;
-        const ip = req.ip;
 
-
-        
         const p = await products.findOne({ $and: [{ email: req.body.userInfo.email }, { name: name }] });
         
         if (p) {
