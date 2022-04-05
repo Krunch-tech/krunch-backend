@@ -17,7 +17,7 @@ const validator = createValidator();
 
 const querySchema = Joi.object({
     name: Joi.string(),
-    prodcutType: Joi.string(),
+    productType: Joi.string(),
     picture: Joi.string(),
     price: Joi.string(),
     date: Joi.string(),
