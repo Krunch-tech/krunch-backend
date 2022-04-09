@@ -15,6 +15,7 @@ import updateNameRouter from './routes/updateName';
 import updatePictureRouter from './routes/updatePicture';
 import checkUser from './routes/checkUser';
 import googleLogin from './routes/googleLogin';
+import getItemsRouter from './routes/getItems';
 import cors from 'cors';
 
 
@@ -34,6 +35,7 @@ app.use('/updateName', authorize, updateNameRouter);
 app.use('/updatePicture', authorize, updatePictureRouter);
 app.use('/checkUser', checkUser);
 app.use('/googleLogin', googleLogin);
+app.use('/getAllItems', authorize,  getItemsRouter);
 app.get('/', async (req: Request, res: Response)=> {
     res.send("testing")
 })
