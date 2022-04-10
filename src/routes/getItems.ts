@@ -6,8 +6,9 @@ const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
 
+    console.log(req.body.userInfo);
     try {
-        const product = await products.find({email: req.body.userInfo.email});
+        const product = await products.find({userEmail: req.body.userInfo.email});
 
         if(product.length!==0) {
             res.status(200).json({success: true, products: product});
